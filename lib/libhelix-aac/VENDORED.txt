@@ -1,0 +1,5 @@
+Helix AAC decoder (RealNetworks RPSL/RCSL, see file headers).
+Source: https://github.com/pschatzmann/arduino-libhelix src/libhelix-aac
+Commit: 5c0a04302dbd661a56408eeb1756e01dd8d33ba1
+Local files: ConfigHelix.h and utils/helix_memory.c replace the Arduino wrapper glue.
+Local change: AACInitDecoder no longer allocates the SBR state. AACEnableSBR (aacdec.c) allocates it on demand.

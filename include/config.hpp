@@ -1,0 +1,85 @@
+#pragma once
+
+#include <cstddef>
+#include <cstdint>
+#ifndef UNIT_TEST
+#include <freertos/FreeRTOS.h>
+#endif
+
+// The cardputer-adv-diag environment overrides this with -DAUDIO_DIAG=1.
+#ifndef AUDIO_DIAG
+#define AUDIO_DIAG 0
+#endif
+
+namespace cfg {
+
+constexpr int kScreenW = 240;
+constexpr int kScreenH = 135;
+
+// I2C
+constexpr int kI2cSda = 8;
+constexpr int kI2cScl = 9;
+
+// ES8311 / I2S (Cardputer-ADV)
+// G41=BCLK, G43=LRCK, G42=DSDIN.
+// The jack mutes the speaker in hardware. The MCU cannot detect the mute.
+constexpr int kI2sBclk = 41;
+constexpr int kI2sLrck = 43;
+constexpr int kI2sDout = 42;
+constexpr uint8_t kEs8311Addr = 0x18;
+constexpr uint32_t kEs8311I2cHz = 400000;
+
+// microSD SPI
+constexpr int kSdCs = 12;
+constexpr int kSdMosi = 14;
+constexpr int kSdSck = 40;
+constexpr int kSdMiso = 39;
+constexpr uint32_t kSdSpiHz = 4000000;
+
+// UI layout
+constexpr int kTopBarH = 16;
+constexpr int kKeyBarH = 18;
+constexpr int kListTop = 18;
+constexpr int kListRowH = 16;
+constexpr int kMaxVisibleRows = 6;
+constexpr uint32_t kBatteryUpdateMs = 5000;
+constexpr uint32_t kBatterySampleMs = 20;
+constexpr uint8_t kBatterySamples = 16;
+constexpr uint8_t kDisplayBrightness = 128;
+constexpr uint32_t kDisplayTimeoutMs = 10000;
+
+// Browser / player
+constexpr size_t kMaxDirEntries = 256;
+constexpr size_t kMaxPathLen = 256;
+constexpr size_t kMaxNameLen = kMaxPathLen;
+// Small volume steps permit adjustment at low headphone levels.
+constexpr int kVolumeStepPercent = 2;
+constexpr int kSkipSeconds = 30;
+constexpr int kSpeedMinPercent = 50;
+constexpr int kSpeedMaxPercent = 300;
+constexpr int kSpeedStepPercent = 10;
+// Prev selects the previous track at or below this playback time.
+// Prev restarts the current track above this playback time.
+constexpr uint32_t kPrevRestartMs = 3000;
+// Use a low initial volume for headphones.
+constexpr int kDefaultVolumePercent = 30;
+constexpr uint32_t kToastMs = 1500;
+constexpr uint32_t kSplashMs = 1600;
+constexpr uint32_t kBrowserLocationSaveDelayMs = 750;
+constexpr uint32_t kBookmarkSaveIntervalMs = 10000;
+constexpr size_t kRecentCount = 5;
+
+
+// Audio task
+constexpr uint32_t kDefaultSampleRate = 44100;
+constexpr int kAudioTaskStack = 24576;
+#ifndef UNIT_TEST
+constexpr UBaseType_t kAudioTaskPrio = 5;
+#else
+constexpr unsigned kAudioTaskPrio = 5;
+#endif
+constexpr size_t kPcmRingFrames = 4096;
+constexpr size_t kCompressedBuf = 16 * 1024;
+constexpr bool kBootBeep = false;
+
+}  // namespace cfg
